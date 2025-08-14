@@ -21,6 +21,7 @@ import Categories from "./Components/HomePageComponnets/Categories";
 import TopRatedCategories from "./Components/HomePageComponnets/TopRated"
 import AboutSection from "./Components/HomePageComponnets/About";
 import TestimonialSection from "./Components/HomePageComponnets/Testimonial.jsx"
+import CompanyRegistrationPage from './pages/CompanyRegisterationPage.jsx'
 
 export  {
   //! Layout.jsx
@@ -44,4 +45,6 @@ export  {
   TopRatedCategories,
   AboutSection,
   TestimonialSection,
+  //COmpanyRegisteration page
+  CompanyRegistrationPage
 };

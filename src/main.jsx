@@ -5,7 +5,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import App from './App.jsx'
 import './App.css'; //
 
-import {Layout, HomePage, LoginPage, SignupPage} from "./index.js"
+import {Layout, HomePage, LoginPage, SignupPage, CompanyRegistrationPage} from "./index.js"
+
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -15,6 +16,7 @@ createRoot(document.getElementById('root')).render(
        <Route index element={<HomePage/>} />
        <Route path="login" element={<LoginPage/>} />
        <Route path="signup" element={<SignupPage/>} />
+       <Route path="comp-signup" element={<CompanyRegistrationPage/>} />
     </Route>
    </Routes>
    </BrowserRouter>
