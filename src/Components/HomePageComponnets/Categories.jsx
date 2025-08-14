@@ -1,5 +1,5 @@
 import React from 'react'
-
+import {Divider} from '../../index'
 function Categories() {
   const categories = [
     { id: 1, name: 'Restaurants', icon: '🍽️', reviewCount: 1250 },
@@ -75,17 +75,7 @@ function Categories() {
 
 
       {/* Enhanced Divider */}
-      <div className="w-full py-8 flex items-center justify-center ">
-        <div className="flex items-center space-x-4">
-          <div className="w-54 md:w-62 h-0.5 bg-gradient-to-r from-transparent to-amber-400"></div>
-          <div className="flex space-x-2">
-            <div className="w-2 h-2 rounded-full bg-amber-600"></div>
-            <div className="w-2 h-2 rounded-full bg-amber-600 opacity-70"></div>
-            <div className="w-2 h-2 rounded-full bg-amber-600 opacity-40"></div>
-          </div>
-          <div className="w-54 md:w-62 h-0.5 bg-gradient-to-l from-transparent to-amber-400"></div>
-        </div>
-      </div>
+     <Divider></Divider>
     </div>
   )
 }

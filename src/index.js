@@ -9,6 +9,8 @@ import Container from "./Components/Container/Container";
 // * Haeder and footer
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
+// * Divider componnet 
+import Divider from "./Components/Divider/diveder.jsx";
 // * Login page and sign up page 
 import SignupPage from "./pages/SignupPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
@@ -30,6 +32,8 @@ export  {
   //! Haeder and Footer
   Header,
   Footer,
+  // ! Divider
+  Divider,
   //! Signup page and login page 
   SignupPage,
   LoginPage,

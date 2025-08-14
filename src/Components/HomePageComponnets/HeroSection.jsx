@@ -1,4 +1,5 @@
 import React from 'react';
+import {Divider} from '../../index'
 
 function Container({ children }) {
   return (
@@ -11,26 +12,26 @@ function Container({ children }) {
 function HeroSection() {
   return (
     <>
-      <section className="w-full min-h-[75vh] bg-gradient-to-br from-amber-900 to-amber-800 flex items-center justify-center relative overflow-hidden">
+      <section className="w-full min-h-[60vh] md:min-h-[75vh] bg-gradient-to-br from-amber-900 to-amber-800 flex items-center justify-center relative overflow-hidden">
         
         {/* Background Circles - Positioned behind content */}
         <div className="absolute inset-0 overflow-hidden z-0">
           {/* Large Circle - Behind everything */}
-          <div className="absolute -right-40 -top-40 w-96 h-96 rounded-full bg-amber-700 opacity-10 animate-rotate1"></div>
+          <div className="absolute -right-40 -top-40 w-64 h-64 md:w-96 md:h-96 rounded-full bg-amber-700 opacity-10 animate-rotate1"></div>
           
           {/* Medium Circle - Behind everything */}
-          <div className="absolute -left-20 -bottom-20 w-64 h-64 rounded-full bg-amber-600 opacity-15 animate-rotate2"></div>
+          <div className="absolute -left-20 -bottom-20 w-40 h-40 md:w-64 md:h-64 rounded-full bg-amber-600 opacity-15 animate-rotate2"></div>
           
           {/* Small Circles - Behind everything */}
-          <div className="absolute top-1/4 left-1/4 w-12 h-12 rounded-full bg-amber-400 opacity-30 animate-float1"></div>
-          <div className="absolute top-1/3 right-1/5 w-8 h-8 rounded-full bg-amber-300 opacity-30 animate-float2"></div>
-          <div className="absolute bottom-1/4 right-1/3 w-10 h-10 rounded-full bg-amber-500 opacity-30 animate-float3"></div>
+          <div className="absolute top-1/4 left-1/4 w-8 h-8 md:w-12 md:h-12 rounded-full bg-amber-400 opacity-30 animate-float1"></div>
+          <div className="absolute top-1/3 right-1/5 w-6 h-6 md:w-8 md:h-8 rounded-full bg-amber-300 opacity-30 animate-float2"></div>
+          <div className="absolute bottom-1/4 right-1/3 w-8 h-8 md:w-10 md:h-10 rounded-full bg-amber-500 opacity-30 animate-float3"></div>
           
           {/* Particle Effects - Behind everything */}
-          {[...Array(15)].map((_, i) => (
+          {[...Array(10)].map((_, i) => (
             <div 
               key={i}
-              className="absolute w-2 h-2 rounded-full bg-amber-300 opacity-20 animate-particle"
+              className="absolute w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-amber-300 opacity-20 animate-particle"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -44,7 +45,7 @@ function HeroSection() {
         <div className="absolute bottom-0 left-0 w-full overflow-hidden z-10">
           <svg
             className="relative w-full"
-            style={{ height: '200px' }}
+            style={{ height: '120px' }}
             viewBox="0 0 1200 100"
             preserveAspectRatio="none"
           >
@@ -105,7 +106,7 @@ function HeroSection() {
               transform: translate(0, 0);
             }
             50% {
-              transform: translate(-20px, -30px);
+              transform: translate(-10px, -15px);
             }
           }
 
@@ -114,7 +115,7 @@ function HeroSection() {
               transform: translate(0, 0);
             }
             50% {
-              transform: translate(15px, 25px);
+              transform: translate(8px, 12px);
             }
           }
 
@@ -123,7 +124,7 @@ function HeroSection() {
               transform: translate(0, 0);
             }
             50% {
-              transform: translate(10px, -20px);
+              transform: translate(5px, -10px);
             }
           }
 
@@ -157,16 +158,16 @@ function HeroSection() {
               opacity: 0.2;
             }
             100% {
-              transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px);
+              transform: translate(${Math.random() * 60 - 30}px, ${Math.random() * 60 - 30}px);
               opacity: 0;
             }
           }
         `}</style>
 
         <Container>
-          <div className="relative z-20 text-center">
+          <div className="relative z-20 text-center px-4">
             <div>
-              <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6">
                 Welcome to{' '}
                 <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
                   Our Site
@@ -174,16 +175,16 @@ function HeroSection() {
               </h1>
               
               <div>
-                <p className="text-xl text-amber-100 mb-8 max-w-2xl mx-auto">
+                <p className="text-lg sm:text-xl text-amber-100 mb-6 md:mb-8 max-w-2xl mx-auto">
                   Experience warm design with elegant circular elements
                 </p>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="px-8 py-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg transition-all duration-300 hover:transform hover:scale-105 shadow-lg">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                <button className="px-6 py-3 sm:px-8 sm:py-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg transition-all duration-300 hover:transform hover:scale-105 shadow-lg">
                   Get Started
                 </button>
-                <button className="px-8 py-4 border border-amber-400 text-amber-100 hover:bg-amber-600 hover:text-white font-semibold rounded-lg transition-all duration-300">
+                <button className="px-6 py-3 sm:px-8 sm:py-4 border border-amber-400 text-amber-100 hover:bg-amber-600 hover:text-white font-semibold rounded-lg transition-all duration-300">
                   Learn More
                 </button>
               </div>
@@ -193,17 +194,7 @@ function HeroSection() {
       </section>
 
       {/* Enhanced Divider */}
-      <div className="w-full py-8 flex items-center justify-center ">
-        <div className="flex items-center space-x-4">
-          <div className="w-54 md:w-62 h-0.5 bg-gradient-to-r from-transparent to-amber-400"></div>
-          <div className="flex space-x-2">
-            <div className="w-2 h-2 rounded-full bg-amber-600"></div>
-            <div className="w-2 h-2 rounded-full bg-amber-600 opacity-70"></div>
-            <div className="w-2 h-2 rounded-full bg-amber-600 opacity-40"></div>
-          </div>
-          <div className="w-54 md:w-62 h-0.5 bg-gradient-to-l from-transparent to-amber-400"></div>
-        </div>
-      </div>
+     <Divider></Divider>
     </>
   );
 }
