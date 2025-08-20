@@ -11,6 +11,7 @@ import App from './App.jsx'
 import './App.css'
 
 import { Layout, HomePage, LoginPage, SignupPage, CompanyRegistrationPage, BusinessAccountRegister } from "./index.js"
+import ProfilePage from './pages/userPages/ProfilePage.jsx'
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -26,7 +27,8 @@ createRoot(document.getElementById('root')).render(
             <Route path="register-business" element={<BusinessAccountRegister />} />
             <Route path="/add-business/:id" element={<BusIfNot />} />
             <Route path="add-business" element={<BusIfNot />} />
-          </Route>
+             <Route path="user-prof/:id" element={<ProfilePage/>} />
+    </Route>
         </Routes>
       </BrowserRouter>
       </PersistGate>
