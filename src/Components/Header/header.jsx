@@ -14,6 +14,7 @@ function Header() {
 
   // Get auth state
   const { status, userData } = useSelector((state) => state.auth);
+  const showBusinessLink = !(status && userData?.type === "business");
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -66,10 +67,9 @@ function Header() {
   };
 
   const navLinkClass = ({ isActive }) =>
-    `px-4 py-2 font-medium transition-all duration-300 rounded-lg ${
-      isActive
-        ? "text-white bg-[#b45309]"
-        : "text-white hover:text-amber-100 hover:bg-[#b45309]/90"
+    `px-4 py-2 font-medium transition-all duration-300 rounded-lg ${isActive
+      ? "text-white bg-[#b45309]"
+      : "text-white hover:text-amber-100 hover:bg-[#b45309]/90"
     }`;
 
   return (
@@ -95,9 +95,11 @@ function Header() {
             <NavLink to="/about" className={navLinkClass}>
               About
             </NavLink>
-            <NavLink to={getBusinessLink()} className={navLinkClass}>
-              + Business
-            </NavLink>
+            {showBusinessLink && (
+              <NavLink to={getBusinessLink()} className={navLinkClass}>
+                + Business
+              </NavLink>
+            )}
             {!status && (
               <NavLink to="/login" className={navLinkClass}>
                 Login
@@ -161,7 +163,7 @@ function Header() {
                     </div>
                     <button
                       onClick={() => {
-                        navigate("/profile");
+                        navigate(`/user-prof/${userData?.id}`);
                         setIsProfileDropdownOpen(false);
                       }}
                       className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
@@ -245,9 +247,8 @@ function Header() {
               aria-label="Toggle search"
             >
               <svg
-                className={`w-5 h-5 sm:w-6 sm:h-6 transform transition-transform duration-300 ${
-                  isMobileSearchOpen ? "rotate-180" : ""
-                }`}
+                className={`w-5 h-5 sm:w-6 sm:h-6 transform transition-transform duration-300 ${isMobileSearchOpen ? "rotate-180" : ""
+                  }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -277,9 +278,8 @@ function Header() {
               aria-label="Toggle menu"
             >
               <svg
-                className={`w-5 h-5 sm:w-6 sm:h-6 transform transition-transform duration-300 ${
-                  isMobileMenuOpen ? "rotate-90" : ""
-                }`}
+                className={`w-5 h-5 sm:w-6 sm:h-6 transform transition-transform duration-300 ${isMobileMenuOpen ? "rotate-90" : ""
+                  }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -306,9 +306,8 @@ function Header() {
 
         {/* Mobile Search */}
         <div
-          className={`lg:hidden transition-all duration-300 ease-in-out ${
-            isMobileSearchOpen ? "max-h-20 opacity-100 pb-4" : "max-h-0 opacity-0"
-          } overflow-hidden`}
+          className={`lg:hidden transition-all duration-300 ease-in-out ${isMobileSearchOpen ? "max-h-20 opacity-100 pb-4" : "max-h-0 opacity-0"
+            } overflow-hidden`}
         >
           <div className="px-4">
             <div className="relative">
@@ -340,9 +339,8 @@ function Header() {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden transition-all duration-300 ease-in-out ${
-          isMobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-        } overflow-hidden bg-[#b45309] shadow-inner`}
+        className={`lg:hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+          } overflow-hidden bg-[#b45309] shadow-inner`}
       >
         <Container>
           <nav className="py-2 space-y-1">
@@ -367,13 +365,11 @@ function Header() {
             >
               About
             </NavLink>
-            <NavLink
-              to={getBusinessLink()}
-              className="block px-4 py-3 text-white hover:bg-[#9a4607] rounded-lg transition-colors duration-300 font-medium"
-              onClick={toggleMobileMenu}
-            >
-              + Business
-            </NavLink>
+            {showBusinessLink && (
+              <NavLink to={getBusinessLink()} className={navLinkClass}>
+                + Business
+              </NavLink>
+            )}
             {!status ? (
               <>
                 <NavLink

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../Store/authSlice'; // Adjust path as needed
+import Toaster from '../components/Toaster'; // Adjust path based on your project structure
 
 function LoginPage() {
   const [formData, setFormData] = useState({
@@ -114,28 +115,41 @@ function LoginPage() {
     try {
       const response = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
+      console.log("first",data);
 
       if (response.ok) {
-        // Store token and userId
         localStorage.setItem('token', data.token);
         localStorage.setItem('userId', data.user.id);
-        
-        // Update Redux store with user data
-        dispatch(login(data.user));
-        
+        localStorage.setItem('userData', JSON.stringify({
+          id: data.user.id,
+          firstName: data.user.first_name,
+          lastName: data.user.last_name,
+          email: data.user.email,
+          type: data.user.type,
+          prof_img: data.user.prof_img,
+          status: data.user.status,
+          subscription: data.user.subscription, // Default to 'free' if not set
+        }));
+        console.log("prof_img: ",data.user,)
+        console.log("prof_img: ",data.user.prof_img,)
+        dispatch(login({
+          id: data.user.id,
+          firstName: data.user.first_name,
+          lastName: data.user.last_name,
+          email: data.user.email,
+          type: data.user.type,
+          prof_img: data.user.prof_img,
+          status: data.user.status,
+          subscription: data.user.subscription, 
+        }));
         setMessage('Login successful!');
-        
-        // Redirect to home page
-        setTimeout(() => {
-          navigate('/');
-        }, 1500);
+        setTimeout(() => navigate('/'), 1500);
+        // window.location.reload(); // Reload to apply changes
       } else {
         setError(data.error || 'Login failed');
       }
@@ -181,20 +195,17 @@ function LoginPage() {
           </p>
         </div>
 
-        {/* Success Message */}
-        {message && (
-          <div className="rounded-md bg-green-50 p-4 border border-green-200">
-            <div className="text-sm text-green-700">{message}</div>
-          </div>
-        )}
+        {/* Toaster for Success and Error Messages */}
+        <Toaster
+          message={message || error}
+          type={message ? 'success' : 'error'}
+          duration={5000}
+          onClose={() => {
+            setMessage('');
+            setError('');
+          }}
+        />
 
-        {/* Error Message */}
-        {error && (
-          <div className="rounded-md bg-red-50 p-4 border border-red-200">
-            <div className="text-sm text-red-700">{error}</div>
-          </div>
-        )}
-        
         {/* Google Login Button */}
         <div>
           <button

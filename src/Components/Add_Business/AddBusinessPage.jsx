@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import Toaster from '../Toaster'; // Adjust path based on your project structure
 
 function AddBusinessPage() {
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
     email: '',
-    password: '',
     address: '',
+    password: '',
     aadhar_num: '',
     pan_num: '',
   });
@@ -70,16 +71,16 @@ function AddBusinessPage() {
       setError('Invalid email format');
       return false;
     }
-    if (formData.password.length < 6 && !id) {
-      setError('Password must be at least 6 characters');
-      return false;
-    }
     if (!/^\d{12}$/.test(formData.aadhar_num)) {
       setError('Aadhar number must be 12 digits');
       return false;
     }
     if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(formData.pan_num)) {
       setError('Invalid PAN number format');
+      return false;
+    }
+    if (!id && (!formData.password || formData.password.length < 6)) {
+      setError('Password must be at least 6 characters');
       return false;
     }
     if (!aadhar_img && !id) {
@@ -130,8 +131,8 @@ function AddBusinessPage() {
             first_name: user.first_name || '',
             last_name: user.last_name || '',
             email: user.email || '',
-            password: '',
             address: user.address || '',
+            password: '',
             aadhar_num: user.aadhar_num || '',
             pan_num: user.pan_num || '',
           });
@@ -169,8 +170,8 @@ function AddBusinessPage() {
       fd.append('first_name', formData.first_name);
       fd.append('last_name', formData.last_name);
       fd.append('email', formData.email);
-      if (formData.password) fd.append('password', formData.password);
       fd.append('address', formData.address);
+      fd.append('password', formData.password);
       fd.append('aadhar_num', formData.aadhar_num);
       fd.append('pan_num', formData.pan_num);
 
@@ -208,8 +209,8 @@ function AddBusinessPage() {
           first_name: '',
           last_name: '',
           email: '',
-          password: '',
           address: '',
+          password: '',
           aadhar_num: '',
           pan_num: '',
         });
@@ -223,7 +224,16 @@ function AddBusinessPage() {
           }, 2000);
         }
       } else {
-        setError(data.error || 'Something went wrong');
+        // Handle specific Prisma error for unique constraint violation
+        if (data.code === 'P2002' && data.meta?.target?.includes('aadhar_num')) {
+          setError('This Aadhar number is already registered.');
+        } else if (data.code === 'P2002' && data.meta?.target?.includes('pan_num')) {
+          setError('This PAN number is already registered.');
+        } else if (data.code === 'P2002' && data.meta?.target?.includes('email')) {
+          setError('This email is already registered.');
+        } else {
+          setError(data.error || 'Something went wrong');
+        }
         console.log('Error:', data);
       }
     } catch (err) {
@@ -264,8 +274,16 @@ function AddBusinessPage() {
           </p>
         </div>
 
-        {message && <div className="bg-green-50 border border-green-200 p-3 rounded-md text-green-700">{message}</div>}
-        {error && <div className="bg-red-50 border border-red-200 p-3 rounded-md text-red-700">{error}</div>}
+        {/* Toaster for Success and Error Messages */}
+        <Toaster
+          message={message || error}
+          type={message ? 'success' : 'error'}
+          duration={5000}
+          onClose={() => {
+            setMessage('');
+            setError('');
+          }}
+        />
 
         {showLogin ? (
           <form onSubmit={handleLoginSubmit} className="space-y-4 bg-amber-50 p-6 rounded-lg shadow-md">
@@ -352,15 +370,17 @@ function AddBusinessPage() {
                 placeholder="Address"
                 className="w-full p-2 border border-amber-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
               />
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required={!id}
-                placeholder="Password"
-                className="w-full p-2 border border-amber-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
-              />
+              {!id && (
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  placeholder="Password"
+                  className="w-full p-2 border border-amber-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
+                />
+              )}
               <input
                 type="text"
                 name="aadhar_num"

@@ -28,7 +28,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="/add-business/:id" element={<BusIfNot />} />
             <Route path="add-business" element={<BusIfNot />} />
              <Route path="user-prof/:id" element={<ProfilePage/>} />
-    </Route>
+          </Route>
         </Routes>
       </BrowserRouter>
       </PersistGate>

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Toaster from '../components/Toaster'; // Adjust the path based on your project structure
 
 function SignupPage() {
   const [formData, setFormData] = useState({
@@ -7,7 +8,7 @@ function SignupPage() {
     lastName: '',
     email: '',
     password: '',
-    address:'',
+    address: '',
     city: '',
   });
   const [loading, setLoading] = useState(false);
@@ -51,6 +52,7 @@ function SignupPage() {
           email: '',
           password: '',
           address: '',
+          city: '',
         });
 
         // Redirect to login page after 2 seconds
@@ -109,20 +111,17 @@ function SignupPage() {
           </p>
         </div>
 
-        {/* Success Message */}
-        {message && (
-          <div className="rounded-md bg-green-50 p-4 border border-green-200">
-            <div className="text-sm text-green-700">{message}</div>
-          </div>
-        )}
+        {/* Toaster for Success and Error Messages */}
+        <Toaster
+          message={message || error}
+          type={message ? 'success' : 'error'}
+          duration={5000}
+          onClose={() => {
+            setMessage('');
+            setError('');
+          }}
+        />
 
-        {/* Error Message */}
-        {error && (
-          <div className="rounded-md bg-red-50 p-4 border border-red-200">
-            <div className="text-sm text-red-700">{error}</div>
-          </div>
-        )}
-        
         {/* Google Signup Button */}
         <button 
           onClick={handleGoogleSignup}
@@ -197,7 +196,7 @@ function SignupPage() {
               required
               disabled={googleLoading}
               className="mt-1 block w-full rounded-md border-amber-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-3 border disabled:opacity-50"
-              placeholder="Enter your email"
+              placeholder="Enter your address"
             />
           </div>
 

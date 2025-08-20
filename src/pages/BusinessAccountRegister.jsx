@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Toaster from "../Components/Toaster";
+import Toaster from '../components/Toaster';
 
 function BusinessAccountRegister() {
   const [formData, setFormData] = useState({
