@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { login } from '../Store/authSlice'; // Adjust path as needed
 
 function LoginPage() {
   const [formData, setFormData] = useState({
@@ -12,6 +14,7 @@ function LoginPage() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Check for Google auth success/error or manual login success on page load
   useEffect(() => {
@@ -21,8 +24,12 @@ function LoginPage() {
     const errorParam = urlParams.get('error');
 
     if (token) {
-      // Store token and redirect to home
+      // Store token
       localStorage.setItem('token', token);
+      
+      // Fetch user data and update Redux store
+      fetchUserDataAndLogin(token);
+      
       setMessage(googleAuth ? 'Google login successful!' : 'Login successful!');
       setTimeout(() => {
         navigate('/');
@@ -42,7 +49,30 @@ function LoginPage() {
           setError('Authentication failed. Please try again.');
       }
     }
-  }, [navigate]);
+  }, [navigate, dispatch]);
+
+  // Function to fetch user data and update Redux store
+  const fetchUserDataAndLogin = async (token) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/me', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+        // Update Redux store
+        dispatch(login(userData));
+      } else {
+        console.error('Failed to fetch user data');
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -93,8 +123,13 @@ function LoginPage() {
       const data = await response.json();
 
       if (response.ok) {
-        // Store token
+        // Store token and userId
         localStorage.setItem('token', data.token);
+        localStorage.setItem('userId', data.user.id);
+        
+        // Update Redux store with user data
+        dispatch(login(data.user));
+        
         setMessage('Login successful!');
         
         // Redirect to home page

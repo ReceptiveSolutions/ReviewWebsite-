@@ -6,7 +6,9 @@ function SignupPage() {
     firstName: '',
     lastName: '',
     email: '',
-    password: ''
+    password: '',
+    address:'',
+    city: '',
   });
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -47,7 +49,8 @@ function SignupPage() {
           firstName: '',
           lastName: '',
           email: '',
-          password: ''
+          password: '',
+          address: '',
         });
 
         // Redirect to login page after 2 seconds
@@ -177,6 +180,19 @@ function SignupPage() {
               type="email"
               name="email"
               value={formData.email}
+              onChange={handleChange}
+              required
+              disabled={googleLoading}
+              className="mt-1 block w-full rounded-md border-amber-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-3 border disabled:opacity-50"
+              placeholder="Enter your email"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-amber-800">Address *</label>
+            <input
+              type="text"
+              name="address"
+              value={formData.address}
               onChange={handleChange}
               required
               disabled={googleLoading}
