@@ -50,8 +50,9 @@ function Header() {
     dispatch(logout());
     setIsProfileDropdownOpen(false);
     navigate("/");
-    localStorage.removeItem("userId"); // Clear userId from local storage on logout
-    localStorage.removeItem("token"); // Clear token from local storage
+    localStorage.removeItem("userId");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userData");
   };
 
   const toggleProfileDropdown = () => {
@@ -66,10 +67,29 @@ function Header() {
     return "/add-business";
   };
 
+  // Construct profile image URL or fallback to first letter
+  const getProfileDisplay = () => {
+    if (userData?.prof_img) {
+      return (
+        <img
+          src={`http://localhost:5000/uploads/${userData.prof_img}`}
+          alt="Profile"
+          className="w-10 h-10 rounded-full object-cover"
+        />
+      );
+    }
+    return (
+      <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#b45309] font-bold cursor-pointer shadow-md">
+        {userData?.firstName?.[0]?.toUpperCase() || "U"}
+      </div>
+    );
+  };
+
   const navLinkClass = ({ isActive }) =>
-    `px-4 py-2 font-medium transition-all duration-300 rounded-lg ${isActive
-      ? "text-white bg-[#b45309]"
-      : "text-white hover:text-amber-100 hover:bg-[#b45309]/90"
+    `px-4 py-2 font-medium transition-all duration-300 rounded-lg ${
+      isActive
+        ? "text-white bg-[#b45309]"
+        : "text-white hover:text-amber-100 hover:bg-[#b45309]/90"
     }`;
 
   return (
@@ -145,9 +165,7 @@ function Header() {
                   onClick={toggleProfileDropdown}
                   className="flex items-center space-x-2 p-1 rounded-lg hover:bg-[#b45309]/90 transition-all duration-300"
                 >
-                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#b45309] font-bold cursor-pointer shadow-md">
-                    {userData?.firstName?.[0]?.toUpperCase() || "U"}
-                  </div>
+                  {getProfileDisplay()}
                 </button>
 
                 {/* Profile Dropdown */}
@@ -247,8 +265,9 @@ function Header() {
               aria-label="Toggle search"
             >
               <svg
-                className={`w-5 h-5 sm:w-6 sm:h-6 transform transition-transform duration-300 ${isMobileSearchOpen ? "rotate-180" : ""
-                  }`}
+                className={`w-5 h-5 sm:w-6 sm:h-6 transform transition-transform duration-300 ${
+                  isMobileSearchOpen ? "rotate-180" : ""
+                }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -278,8 +297,9 @@ function Header() {
               aria-label="Toggle menu"
             >
               <svg
-                className={`w-5 h-5 sm:w-6 sm:h-6 transform transition-transform duration-300 ${isMobileMenuOpen ? "rotate-90" : ""
-                  }`}
+                className={`w-5 h-5 sm:w-6 sm:h-6 transform transition-transform duration-300 ${
+                  isMobileMenuOpen ? "rotate-90" : ""
+                }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -306,8 +326,9 @@ function Header() {
 
         {/* Mobile Search */}
         <div
-          className={`lg:hidden transition-all duration-300 ease-in-out ${isMobileSearchOpen ? "max-h-20 opacity-100 pb-4" : "max-h-0 opacity-0"
-            } overflow-hidden`}
+          className={`lg:hidden transition-all duration-300 ease-in-out ${
+            isMobileSearchOpen ? "max-h-20 opacity-100 pb-4" : "max-h-0 opacity-0"
+          } overflow-hidden`}
         >
           <div className="px-4">
             <div className="relative">
@@ -339,8 +360,9 @@ function Header() {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-          } overflow-hidden bg-[#b45309] shadow-inner`}
+        className={`lg:hidden transition-all duration-300 ease-in-out ${
+          isMobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+        } overflow-hidden bg-[#b45309] shadow-inner`}
       >
         <Container>
           <nav className="py-2 space-y-1">
@@ -366,7 +388,11 @@ function Header() {
               About
             </NavLink>
             {showBusinessLink && (
-              <NavLink to={getBusinessLink()} className={navLinkClass}>
+              <NavLink
+                to={getBusinessLink()}
+                className="block px-4 py-3 text-white hover:bg-[#9a4607] rounded-lg transition-colors duration-300 font-medium"
+                onClick={toggleMobileMenu}
+              >
                 + Business
               </NavLink>
             )}
@@ -417,9 +443,7 @@ function Header() {
                   Logout
                 </button>
                 <div className="px-4 py-3 flex items-center space-x-3 border-t border-[#9a4607] mt-2 pt-4">
-                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#b45309] font-bold">
-                    {userData?.firstName?.[0]?.toUpperCase() || "U"}
-                  </div>
+                  {getProfileDisplay()}
                   <div>
                     <span className="text-white font-medium block">
                       {userData?.firstName || "User"} {userData?.lastName || ""}
