@@ -7,10 +7,11 @@ import store, { persistor} from './Store/store'   // 👈 make sure you have sto
 import { PersistGate } from 'redux-persist/integration/react';
 import BusIfNot from './Components/Add_Business/AddBusinessPage.jsx'
 
+
 import App from './App.jsx'
 import './App.css'
 
-import { Layout, HomePage, LoginPage, SignupPage, CompanyRegistrationPage, BusinessAccountRegister, CompanyProfilePage } from "./index.js"
+import {  Layout, HomePage, LoginPage, SignupPage, CompanyRegistrationPage, BusinessAccountRegister, CompanyProfilePage } from "./index.js"
 import ProfilePage from './pages/userPages/ProfilePage.jsx'
 
 createRoot(document.getElementById('root')).render(

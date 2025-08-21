@@ -22,6 +22,12 @@ import TopRatedCategories from "./Components/HomePageComponnets/TopRated"
 import AboutSection from "./Components/HomePageComponnets/About";
 import TestimonialSection from "./Components/HomePageComponnets/Testimonial.jsx"
 import CompanyRegistrationPage from './pages/CompanyRegisterationPage.jsx'
+import BusinessAccountRegister from './pages/BusinessAccountRegister.jsx'
+
+//* Comapny  Profile Pages 
+import CompnyProfile from "./Components/CompnyPrrofileComponnets/compnyProfile.jsx";
+import ReviewSection from "./Components/CompnyPrrofileComponnets/reviewSection.jsx";
+import CompanyProfilePage  from "./pages/CompanyProfilePage.jsx";
 
 export  {
   //! Layout.jsx
@@ -46,5 +52,11 @@ export  {
   AboutSection,
   TestimonialSection,
   //COmpanyRegisteration page
-  CompanyRegistrationPage
+  CompanyRegistrationPage,
+  //Change to businness Account Register
+  BusinessAccountRegister,
+  // * Comapny profiel  Pages and componnets 
+  CompnyProfile,
+  ReviewSection,
+  CompanyProfilePage, 
 };

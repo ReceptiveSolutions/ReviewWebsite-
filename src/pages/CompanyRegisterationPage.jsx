@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Instagram, Facebook, Youtube, Twitter, Linkedin, Plus } from "lucide-react";
-import Toaster from '../Components/Toaster';
+import Toaster from '../components/Toaster';
 
 function CompanyRegistrationPage() {
   const [formData, setFormData] = useState({
