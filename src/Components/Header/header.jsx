@@ -93,7 +93,7 @@ function Header() {
     }`;
 
   return (
-    <header className="bg-amber-500 shadow-lg sticky top-0 z-50">
+    <header className="bg-amber-500 shadow-lg sticky top-0 z-500">
       <Container>
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
