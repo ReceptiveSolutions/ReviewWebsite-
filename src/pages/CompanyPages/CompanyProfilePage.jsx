@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Star, MapPin, Globe, Users, Pencil, ChevronDown, ChevronUp, Shield, CheckCircle, MessageCircle, X, Reply, EyeOff, Eye } from 'lucide-react'
-import { CompnyProfile, ReviewSection } from '../index'
+import { CompnyProfile, ReviewSection } from '../../index'
 function CompanyProfilePage(props) {
     
 
@@ -112,11 +112,6 @@ function CompanyProfilePage(props) {
 
             <div className="max-w-7xl mx-auto relative">
                 {/* Enhanced Header Section */}
-                
-                {/* <CompanyProfile 
-  companyData={apiCompanyData} 
-  ratingBreakdown={apiRatingData} 
-/> */}
 
                 <CompnyProfile></CompnyProfile>
                 <ReviewSection></ReviewSection>

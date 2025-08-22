@@ -1,19 +1,13 @@
-import React from 'react'
-import { Star, MapPin, Globe, Users, Pencil, Shield, CheckCircle } from 'lucide-react'
+import React, { useEffect, useState } from 'react';
+import { Star, MapPin, Globe, Users, Pencil, Shield, CheckCircle } from 'lucide-react';
+import { useParams } from 'react-router-dom';
 
 export default function CompanyProfile({ companyData = {}, ratingBreakdown = [] }) {
     // Default data structure if no props are provided
-    const defaultCompanyData = {
-        name: "Golden Oak Solutions",
-        logo: "🏢",
-        totalReviews: 247,
-        averageRating: 4.3,
-        bio: "We are a leading technology consulting firm specializing in innovative software solutions and digital transformation. With over 10 years of experience, we help businesses modernize their operations and achieve their digital goals through cutting-edge technology and expert guidance.",
-        address: "123 Business District, Tech Valley, California 94025",
-        website: "www.goldenoaksolutions.com",
-        isVerified: true
-    }
-    
+    const { id } = useParams();
+    const [company, setCompany] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const defaultRatingBreakdown = [
         { stars: 5, count: 124, percentage: 50 },
         { stars: 4, count: 74, percentage: 30 },
@@ -22,26 +16,76 @@ export default function CompanyProfile({ companyData = {}, ratingBreakdown = [] 
         { stars: 1, count: 5, percentage: 2 }
     ]
 
-    // Use props if available, otherwise use default data
-    const data = Object.keys(companyData).length ? companyData : defaultCompanyData;
+    useEffect(() => {
+        const fetchCompany = async () => {
+            console.log('URL id:', id);
+            if (!id) {
+                setError('Invalid company ID');
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/api/companies/${id}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch company data');
+                }
+                const data = await response.json();
+                setCompany(data);
+                setLoading(false);
+            } catch (err) {
+                setError(err.message);
+                setLoading(false);
+            }
+        };
+
+        fetchCompany();
+    }, [id]);
+
+    const data = company || companyData;
     const ratings = ratingBreakdown.length ? ratingBreakdown : defaultRatingBreakdown;
 
-    const renderStars = (rating, size = "w-5 h-5") => {
+    // Parse categories
+    const categories = data.categories
+        ? typeof data.categories === 'string'
+            ? JSON.parse(data.categories)
+            : data.categories
+        : [];
+    const parsedCategories = typeof categories[0] === 'string' ? JSON.parse(categories[0]) : categories;
+
+    const renderStars = (rating, size = 'w-5 h-5') => {
         return (
             <div className="flex items-center">
                 {[1, 2, 3, 4, 5].map((star) => (
                     <Star
                         key={star}
-                        className={`${size} ${
-                            star <= rating
-                                ? "text-amber-500 fill-amber-500"
-                                : "text-gray-300"
-                        }`}
+                        className={`${size} ${star <= Math.floor(rating || 0)
+                            ? 'text-amber-500 fill-amber-500'
+                            : 'text-gray-300'
+                            }`}
                     />
                 ))}
             </div>
-        )
+        );
+    };
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-64">
+                <div className="text-amber-600 text-lg font-semibold">Loading...</div>
+            </div>
+        );
     }
+
+    if (error) {
+        return (
+            <div className="flex justify-center items-center h-64">
+                <div className="text-red-600 text-lg font-semibold">Error: {error}</div>
+            </div>
+        );
+    }
+
+
 
     return (
         <div className="bg-white rounded-xl p-8 mb-8 shadow-md border border-gray-100">
@@ -51,9 +95,19 @@ export default function CompanyProfile({ companyData = {}, ratingBreakdown = [] 
                     <div className="flex flex-col sm:flex-row items-start gap-8 mb-10">
                         <div className="relative">
                             <div className="text-6xl bg-gradient-to-br from-amber-50 to-amber-100 p-5 rounded-xl shadow-sm border border-amber-200">
-                                {data.logo}
+                                {data.comp_profile_img ? (
+                                    <img
+                                        src={`http://localhost:5000/uploads/${data.comp_profile_img}`}
+                                        alt={data.name || 'Company'}
+                                        className="w-20 h-20 rounded-xl object-cover shadow-sm border border-amber-200"
+                                    />
+                                ) : (
+                                    <div className="text-6xl bg-gradient-to-br from-amber-50 to-amber-100 p-5 rounded-xl shadow-sm border border-amber-200">
+                                        <Users className="w-10 h-10 text-amber-600" />
+                                    </div>
+                                )}
                             </div>
-                            {data.isVerified && (
+                            {data.isverified && (
                                 <div className="absolute -top-1 -right-1 bg-amber-500 text-white p-1.5 rounded-full shadow-md">
                                     <Shield className="w-4 h-4" />
                                 </div>
@@ -62,7 +116,7 @@ export default function CompanyProfile({ companyData = {}, ratingBreakdown = [] 
                         <div className="flex-1">
                             <div className="flex items-center gap-3 mb-4">
                                 <h1 className="text-3xl font-semibold text-gray-900">
-                                    {data.name}
+                                    {data.name || 'Unknown Company'}
                                 </h1>
                                 {data.isVerified && (
                                     <div className="flex items-center gap-1 bg-amber-50 text-amber-700 px-3 py-1.5 rounded-md text-xs font-medium border border-amber-200">
@@ -95,7 +149,7 @@ export default function CompanyProfile({ companyData = {}, ratingBreakdown = [] 
                                 About Us
                             </h3>
                             <p className="text-gray-700 leading-relaxed">
-                                {data.bio}
+                                {data.description || 'No description available.'}
                             </p>
                         </div>
 
@@ -105,9 +159,9 @@ export default function CompanyProfile({ companyData = {}, ratingBreakdown = [] 
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                            <a 
-                                href={`https://${data.website}`} 
-                                target="_blank" 
+                            <a
+                                href={`https://${data.website_link  }`}
+                                target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 shadow-sm hover:shadow-md"
                             >

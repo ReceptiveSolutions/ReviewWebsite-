@@ -27,7 +27,7 @@ import BusinessAccountRegister from './pages/BusinessAccountRegister.jsx'
 //* Comapny  Profile Pages 
 import CompnyProfile from "./Components/CompnyPrrofileComponnets/compnyProfile.jsx";
 import ReviewSection from "./Components/CompnyPrrofileComponnets/reviewSection.jsx";
-import CompanyProfilePage  from "./pages/CompanyProfilePage.jsx";
+import CompanyProfilePage  from "./pages/CompanyPages/CompanyProfilePage.jsx";
 
 export  {
   //! Layout.jsx

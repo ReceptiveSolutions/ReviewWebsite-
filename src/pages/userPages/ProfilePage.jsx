@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "../../Components/UserComponents/Sidebar";
 import ProfileView from "../../Components/UserComponents/ProfileView";
 import ProfileEdit from "../../Components/UserComponents/ProfileEdit";
-import Loader from "../../Components/Loader"; // Adjust the path based on your project structure
+import Loader from "../../Components/Loader"; 
 
 export default function ProfilePage() {
   const [active, setActive] = useState("profile");
