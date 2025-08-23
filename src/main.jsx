@@ -27,9 +27,9 @@ createRoot(document.getElementById('root')).render(
             <Route path="register-business" element={<BusinessAccountRegister />} />
             <Route path="/add-business/:id" element={<BusIfNot />} />
             <Route path="add-business" element={<BusIfNot />} />
-             <Route path="user-prof/:id" element={<ProfilePage/>} />
-             <Route path='comp-profilepage/:id' element={<CompanyProfilePage />}/>
-             <Route path='companies/us&87juhsh7huh77hyh7' element={<AllCompanies />}/>
+            <Route path="user-prof/:id" element={<ProfilePage/>} />
+            <Route path='comp-profilepage/:id' element={<CompanyProfilePage />}/>
+            <Route path='companies/us&87juhsh7huh77hyh7' element={<AllCompanies />}/>
     </Route>
         </Routes>
       </BrowserRouter>

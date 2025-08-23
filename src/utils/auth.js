@@ -9,7 +9,6 @@ export const checkAuthOnLoad = async (dispatch) => {
     console.log("No token or userId found in localStorage");
     return;
   }
-
   try {
     const response = await fetch("http://localhost:5000/api/auth/me", {
       method: "GET",
