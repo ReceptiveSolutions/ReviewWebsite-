@@ -9,7 +9,7 @@ import BusIfNot from './Components/Add_Business/AddBusinessPage.jsx'
 import App from './App.jsx'
 import './App.css'
 
-import {  Layout, HomePage, LoginPage, SignupPage, CompanyRegistrationPage, BusinessAccountRegister, CompanyProfilePage } from "./index.js"
+import {  Layout, HomePage, LoginPage, SignupPage, CompanyRegistrationPage, BusinessAccountRegister, CompanyProfilePage, CompanyDashboard } from "./index.js"
 import ProfilePage from './pages/userPages/ProfilePage.jsx'
 import { AllCompanies } from './pages/CompanyPages/AllCompanies.jsx'
 
@@ -29,6 +29,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="add-business" element={<BusIfNot />} />
             <Route path="user-prof/:id" element={<ProfilePage/>} />
             <Route path='comp-profilepage/:id' element={<CompanyProfilePage />}/>
+             <Route path='comp-dashboard/:id' element={< CompanyDashboard/>}/>
             <Route path='companies/us&87juhsh7huh77hyh7' element={<AllCompanies />}/>
     </Route>
         </Routes>

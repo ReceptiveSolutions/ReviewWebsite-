@@ -6,7 +6,7 @@ function HomePage() {
     <>
      <HeroSection></HeroSection>
      <Categories></Categories>
-     <TopRatedCategories></TopRatedCategories>
+     <TopRatedCategories/>
      <AboutSection></AboutSection>
      <TestimonialSection></TestimonialSection>
     

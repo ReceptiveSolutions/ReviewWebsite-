@@ -1,7 +1,13 @@
 import React from 'react';
 import {Divider} from '../../index'
+import { useNavigate } from 'react-router-dom';
 
 function TopRatedCategories() {
+  const navigate = useNavigate()
+
+  const handlenavigate=()=>{
+    navigate("/companies/us&87juhsh7huh77hyh7")
+  }
   const topRatedCategories = [
     { 
       id: 1, 
@@ -102,6 +108,7 @@ function TopRatedCategories() {
           <div
             key={category.id}
             className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow border border-amber-100 cursor-pointer"
+            onClick={handlenavigate}
           >
             <div className="flex items-start space-x-3">
               {/* Icon */}

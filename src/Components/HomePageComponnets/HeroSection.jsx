@@ -13,6 +13,42 @@ function HeroSection() {
   return (
     <section className="w-full min-h-[70vh] md:min-h-[80vh] bg-gradient-to-b from-white to-amber-50 relative overflow-hidden pt-16 md:pt-20">
       
+      {/* CSS Animations */}
+      <style>
+        {`
+          @keyframes float {
+            0%, 100% {
+              transform: translateY(0px);
+            }
+            50% {
+              transform: translateY(-15px);
+            }
+          }
+          .animate-float {
+            animation: float 5s ease-in-out infinite;
+          }
+          @keyframes waveFlow {
+            0% {
+              transform: translateX(-100px);
+            }
+            100% {
+              transform: translateX(100px);
+            }
+          }
+          .animate-wave {
+            animation: waveFlow 6s ease-in-out infinite;
+          }
+          .animate-wave-delayed {
+            animation: waveFlow 6s ease-in-out infinite;
+            animation-delay: 1.5s;
+          }
+          .animate-wave-slow {
+            animation: waveFlow 8s ease-in-out infinite;
+            animation-delay: 3s;
+          }
+        `}
+      </style>
+      
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden z-0">
         {/* Floating Stars */}
@@ -109,51 +145,29 @@ function HeroSection() {
       </div>
 
       {/* Animated Wave Pattern at Bottom */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden z-10 opacity-40">
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden z-10">
         <svg
-          className="relative w-full"
-          style={{ height: '80px' }}
-          viewBox="0 0 1200 80"
+          className="relative w-full h-25"
+          viewBox="0 0 1200 120"
           preserveAspectRatio="none"
         >
           <path
             className="animate-wave"
-            d="M0,60 C300,20 600,60 1200,40 L1200,80 L0,80 Z"
-            fill="rgba(251, 191, 36, 0.15)"
+            d="M-100,60 C200,20 500,60 1100,40 C1150,38 1200,40 1300,42 L1300,120 L-100,120 Z"
+            fill="rgba(251, 191, 36, 0.25)"
           />
           <path
-            className="animate-wave"
-            d="M0,50 C400,10 800,50 1200,30 L1200,80 L0,80 Z"
-            fill="rgba(251, 191, 36, 0.1)"
-            style={{ animationDelay: '1s' }}
+            className="animate-wave-delayed"
+            d="M-100,50 C300,10 700,50 1100,30 C1150,28 1200,30 1300,32 L1300,120 L-100,120 Z"
+            fill="rgba(251, 191, 36, 0.2)"
+          />
+          <path
+            className="animate-wave-slow"
+            d="M-100,70 C250,30 550,70 1100,50 C1150,48 1200,50 1300,52 L1300,120 L-100,120 Z"
+            fill="rgba(251, 191, 36, 0.15)"
           />
         </svg>
       </div>
-
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-15px);
-          }
-        }
-        .animate-float {
-          animation: float 5s ease-in-out infinite;
-        }
-        @keyframes wave {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-        .animate-wave {
-          animation: wave 6s ease-in-out infinite;
-        }
-      `}</style>
 
       <Container>
         <div className="relative z-20 text-center px-4 flex items-center justify-center min-h-[50vh] md:min-h-[60vh]">
