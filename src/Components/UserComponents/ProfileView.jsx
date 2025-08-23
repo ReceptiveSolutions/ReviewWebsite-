@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, X, User, Shield, Mail, CreditCard, FileText, MapPin, Globe, CheckCircle, Plus, Building2 } from "lucide-react";
 
 function InfoCard({ icon: Icon, title, children }) {
@@ -38,6 +39,7 @@ export default function ProfileView({ user }) {
   const [showAadhar, setShowAadhar] = useState(false);
   const [showPan, setShowPan] = useState(false);
   const [modalImage, setModalImage] = useState(null);
+   const navigate = useNavigate();
 
   const IMAGE_BASE_URL = "http://localhost:5000/uploads/";
 
@@ -106,11 +108,15 @@ export default function ProfileView({ user }) {
               
               {/* Add Company Buttons */}
               <div className="flex flex-wrap gap-3 mb-6">
-                <button className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                  <Plus className="w-4 h-4" />
+                <button onClick={() => navigate("/comp-signup")}
+                className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 cursor-pointer"
+                >
+                  <Plus className="w-4 h-4"/>
                   Add Your Company
                 </button>
-                <button className="flex items-center gap-2 bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                <button 
+                onClick={() => navigate("/comp-dashboard/:id")}
+                className="flex items-center gap-2 bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                   <Building2 className="w-4 h-4" />
                   View Your Companies
                 </button>

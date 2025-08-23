@@ -25,9 +25,17 @@ import CompanyRegistrationPage from './pages/CompanyRegisterationPage.jsx'
 import BusinessAccountRegister from './pages/BusinessAccountRegister.jsx'
 
 //* Comapny  Profile Pages 
+import BackgroundDecorations from "./Components/ComapnySignupComponnets/BackgroundDecorations.jsx";
+import CompanyRegistrationForm from "./Components/ComapnySignupComponnets/CompanyRegistrationFrom.jsx";
+import FormInput from "./Components/ComapnySignupComponnets/FormInput.jsx";
+import SocialLinks from "./Components/ComapnySignupComponnets/SocialLinks.jsx";
 import CompnyProfile from "./Components/CompnyPrrofileComponnets/compnyProfile.jsx";
 import ReviewSection from "./Components/CompnyPrrofileComponnets/reviewSection.jsx";
 import CompanyProfilePage  from "./pages/CompanyPages/CompanyProfilePage.jsx";
+import CompanyDashboard from "./pages/CompanyPages/CompanyDashboard.jsx"
+import Csidebar from "./Components/ComapnyDashboard/Csidebar.jsx";
+import Cprofile from "./Components/ComapnyDashboard/Cprofile.jsx";
+import CompanyDocuments from "./Components/ComapnyDashboard/CoampanyDocuments.jsx";
 
 export  {
   //! Layout.jsx
@@ -56,7 +64,15 @@ export  {
   //Change to businness Account Register
   BusinessAccountRegister,
   // * Comapny profiel  Pages and componnets 
+  BackgroundDecorations,
+  CompanyRegistrationForm,
+  FormInput,
+  SocialLinks,
   CompnyProfile,
   ReviewSection,
   CompanyProfilePage, 
+  CompanyDashboard,
+  Cprofile,
+  Csidebar,
+  CompanyDocuments,
 };
