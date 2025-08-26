@@ -23,7 +23,8 @@ export const AllCompanies = () => {
       }
       
       const data = await response.json();
-      setCompanies(data.data || []);
+      setCompanies(data.data );
+      console.log(data)
     } catch (err) {
       setError(err.message);
       console.error('Error fetching companies:', err);
