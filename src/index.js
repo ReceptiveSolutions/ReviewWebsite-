@@ -31,11 +31,22 @@ import FormInput from "./Components/ComapnySignupComponnets/FormInput.jsx";
 import SocialLinks from "./Components/ComapnySignupComponnets/SocialLinks.jsx";
 import CompnyProfile from "./Components/CompnyPrrofileComponnets/compnyProfile.jsx";
 import ReviewSection from "./Components/CompnyPrrofileComponnets/reviewSection.jsx";
+
+import Comment from "./Components/CompnyPrrofileComponnets/Comment.jsx";
 import CompanyProfilePage  from "./pages/CompanyPages/CompanyProfilePage.jsx";
 import CompanyDashboard from "./pages/CompanyPages/CompanyDashboard.jsx"
 import Csidebar from "./Components/ComapnyDashboard/Csidebar.jsx";
 import Cprofile from "./Components/ComapnyDashboard/Cprofile.jsx";
 import CompanyDocuments from "./Components/ComapnyDashboard/CoampanyDocuments.jsx";
+
+// * Reviews Componnet 
+import MiniReview from "./Components/Reviews/MiniReview.jsx"
+import Comments from "./Components/Reviews/Comments.jsx"
+import CommentsModel from "./Components/Reviews/CommentModel.jsx";
+import CompanyReply from "./Components/Reviews/CompanyReply.jsx";
+import CompanyReplyInmodel from "./Components/Reviews/CompanyReplyInmodel.jsx";
+import ReviewCard from "./Components/Reviews/ReviewCard.jsx";
+import StarRating from "./Components/Reviews/StarRating.jsx";
 
 export  {
   //! Layout.jsx
@@ -70,9 +81,20 @@ export  {
   SocialLinks,
   CompnyProfile,
   ReviewSection,
+  MiniReview,
+  Comment,
   CompanyProfilePage, 
   CompanyDashboard,
   Cprofile,
   Csidebar,
   CompanyDocuments,
+
+  // !!Reviews componnets 
+  CommentsModel,
+  Comments,
+  CompanyReply,
+  CompanyReplyInmodel,
+  ReviewCard,
+  StarRating,
+  
 };

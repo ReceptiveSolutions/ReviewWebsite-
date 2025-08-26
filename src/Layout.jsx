@@ -30,7 +30,7 @@ function Layout() {
 
       if (response.ok) {
         const userData = await response.json();
-        console.log("User data fetched:", userData);
+        // console.log("User data fetched:", userData);
         dispatch(login(userData));
       } else {
         const errorData = await response.json();

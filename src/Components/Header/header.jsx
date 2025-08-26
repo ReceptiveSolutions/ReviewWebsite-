@@ -106,7 +106,7 @@ function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1">
-            <NavLink to="/reviews" className={navLinkClass}>
+            <NavLink to="/companies/us&87juhsh7huh77hyh7" className={navLinkClass}>
               Write Review
             </NavLink>
             <NavLink to="/blog" className={navLinkClass}>

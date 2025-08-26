@@ -1,12 +1,15 @@
 import { Star, MapPin, Mail, Building } from 'lucide-react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const CompanyCard = ({ company, onClick }) => {
+const CompanyCard = ({ company, onClick,cId }) => {
+  // const [compId,setCompId] = useState(0)
   const navigate = useNavigate();
 
   const handleNavigate = (e) => {
     e.stopPropagation(); // Prevent parent onClick
     console.log(company.id, "cid");
+
     navigate(`/comp-profilepage/${company.id}`);
   };
 

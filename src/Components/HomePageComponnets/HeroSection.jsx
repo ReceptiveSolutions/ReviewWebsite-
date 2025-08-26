@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink, useNavigate } from "react-router-dom";
 import { Star, Edit3, MessageCircle, ThumbsUp, Award, Zap, Search, Quote } from 'lucide-react';
 
 function Container({ children }) {
@@ -10,6 +11,7 @@ function Container({ children }) {
 }
 
 function HeroSection() {
+  const navigate = useNavigate();
   return (
     <section className="w-full min-h-[70vh] md:min-h-[80vh] bg-gradient-to-b from-white to-amber-50 relative overflow-hidden pt-16 md:pt-20">
       
@@ -201,7 +203,10 @@ function HeroSection() {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-all duration-300 shadow-md hover:shadow-lg">
+              <button
+              onClick={()=> navigate("/companies/us&87juhsh7huh77hyh7")}
+              
+              className="px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-all duration-300 shadow-md hover:shadow-lg">
                 Write a Review
               </button>
               <button className="px-6 py-3 border border-amber-600 text-amber-700 hover:bg-amber-50 font-medium rounded-lg transition-colors duration-300">

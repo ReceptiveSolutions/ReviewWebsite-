@@ -18,7 +18,7 @@ export default function CompanyProfile({ companyData = {}, ratingBreakdown = [] 
 
     useEffect(() => {
         const fetchCompany = async () => {
-            console.log('URL id:', id);
+            // console.log('URL id:', id);
             if (!id) {
                 setError('Invalid company ID');
                 setLoading(false);
