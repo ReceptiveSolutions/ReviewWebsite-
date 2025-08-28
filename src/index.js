@@ -29,10 +29,10 @@ import BackgroundDecorations from "./Components/ComapnySignupComponnets/Backgrou
 import CompanyRegistrationForm from "./Components/ComapnySignupComponnets/CompanyRegistrationFrom.jsx";
 import FormInput from "./Components/ComapnySignupComponnets/FormInput.jsx";
 import SocialLinks from "./Components/ComapnySignupComponnets/SocialLinks.jsx";
-import CompnyProfile from "./Components/CompnyPrrofileComponnets/compnyProfile.jsx";
-import ReviewSection from "./Components/CompnyPrrofileComponnets/reviewSection.jsx";
+import CompnyProfile from "./Components/CompnyPrrofileComponnets/CompanyProfile.jsx";
+import ReviewSection from "./Components/CompnyPrrofileComponnets/ReviewSection.jsx";
 
-import Comment from "./Components/CompnyPrrofileComponnets/Comment.jsx";
+// import Comment from "./Components/CompnyPrrofileComponnets/Comment.jsx";
 import CompanyProfilePage  from "./pages/CompanyPages/CompanyProfilePage.jsx";
 import CompanyDashboard from "./pages/CompanyPages/CompanyDashboard.jsx"
 import Csidebar from "./Components/ComapnyDashboard/Csidebar.jsx";
@@ -82,7 +82,7 @@ export  {
   CompnyProfile,
   ReviewSection,
   MiniReview,
-  Comment,
+  // Comment,
   CompanyProfilePage, 
   CompanyDashboard,
   Cprofile,
@@ -91,7 +91,7 @@ export  {
 
   // !!Reviews componnets 
   CommentsModel,
-  Comments,
+  // Comments,
   CompanyReply,
   CompanyReplyInmodel,
   ReviewCard,

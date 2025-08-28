@@ -22,58 +22,91 @@ import { useParams } from "react-router-dom";
 
 // Company Profile Component
 function Cprofile() {
-  const [companyData, setCompanyData]= useState(0)
+  const [companyData, setCompanyData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { id } = useParams();
 
-
   useEffect(() => {
-  const fetchCompanyData = async () => {
-    try {
-      const comp_id = id;
-      
-      // Make sure the URL is correct - you have localhost without port
-      // It should probably be localhost:5000 to match your other API calls
-      const response = await fetch(
-        `http://localhost:5000/api/companies/${comp_id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
+    const fetchCompanyData = async () => {
+      try {
+        const comp_id = id;
+        setLoading(true);
+
+        const response = await fetch(
+          `http://localhost:5000/api/companies/${comp_id}?t=${new Date().getTime()}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-      );
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+        const data = await response.json();
+        console.log("Company data fetched:", data);
 
-      const data = await response.json();
-      console.log("Company data fetched:", data);
-      
-      // Set the company data to state here
-      setCompanyData(data);
-      
-    } catch (err) {
-      console.error("Error fetching company data:", err);
-      
-      // Handle specific error cases
-      if (err.name === 'TypeError' && err.message.includes('Failed to fetch')) {
-        console.error("CORS or network error - check if server is running on correct port");
+        // Map fetched data to UI-expected fields
+        setCompanyData({
+          name: data.name || "Unknown Company",
+          comp_profile_img: data.comp_profile_img,
+          verified: data.isverified || false,
+          description: data.description || "No description available.",
+          address: data.address || "No address provided.",
+          phone: data.business_phone,
+          email: data.business_email,
+          website: data.website_link,
+          socials: data.social_links || {},
+          establishedDate: data.created_at,
+          category: data.categories && data.categories.length > 0
+            ? JSON.parse(data.categories[0])[0] // Parse ['["Technologu"]'] to "Technologu"
+            : "Not specified",
+          gstinNum: data.gstin_num,
+          googleMapLink: data.google_map_link,
+        });
+
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching company data:", err);
+        setError(err.message);
+        if (err.name === 'TypeError' && err.message.includes('Failed to fetch')) {
+          setError("Unable to connect to the server. Please check if the server is running.");
+        }
+      } finally {
+        setLoading(false);
       }
+    };
+
+    if (id) {
+      fetchCompanyData();
     }
-  };
+  }, [id]);
 
-  // Only fetch if id exists
-  if (id) {
-    fetchCompanyData();
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="text-amber-600 text-lg font-semibold">Loading...</div>
+      </div>
+    );
   }
-}, [id]); 
-  console.log("first", companyData);
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="text-red-600 text-lg font-semibold">Error: {error}</div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 w-full max-w-full">
       <div className="p-4 sm:p-6 border-b border-gray-100">
         <h2 className="text-lg font-semibold text-gray-900">
-          Company Profile{" "}
+          Company Profile
         </h2>
       </div>
       <div className="p-4 sm:p-6">
@@ -82,15 +115,23 @@ function Cprofile() {
           <div className="flex-shrink-0 flex justify-center sm:justify-start">
             {companyData.comp_profile_img ? (
               <img
-                src={`http://localhost:5000/${companyData.comp_profile_img}`}
+                src={`http://localhost:5000/uploads/${companyData.comp_profile_img}`}
                 alt={`${companyData.name} logo`}
                 className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-cover border-2 border-amber-200"
+                onError={(e) => {
+                  console.error("Failed to load image:", e.target.src);
+                  e.target.style.display = "none"; // Hide broken image
+                  e.target.nextSibling.style.display = "flex"; // Show fallback
+                }}
               />
-            ) : (
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-amber-100 rounded-lg flex items-center justify-center">
-                <Building2 className="h-8 w-8 sm:h-10 sm:w-10 text-amber-600" />
-              </div>
-            )}
+            ) : null}
+            <div
+              className={`w-16 h-16 sm:w-20 sm:h-20 bg-amber-100 rounded-lg flex items-center justify-center ${
+                companyData.comp_profile_img ? "hidden" : "flex"
+              }`}
+            >
+              <Building2 className="h-8 w-8 sm:h-10 sm:w-10 text-amber-600" />
+            </div>
           </div>
 
           <div className="flex-1 text-center sm:text-left">
@@ -114,7 +155,7 @@ function Cprofile() {
               <div className="flex items-center justify-center sm:justify-start space-x-1">
                 <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
                 <span>
-                  Est. {new Date(companyData.establishedDate).getFullYear()}
+                  Est. {companyData.establishedDate ? new Date(companyData.establishedDate).getFullYear() : "N/A"}
                 </span>
               </div>
               <div className="flex items-center justify-center sm:justify-start space-x-1">
@@ -143,22 +184,9 @@ function Cprofile() {
             <div className="space-y-3">
               <div className="flex items-start space-x-3">
                 <MapPin className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
-                {/* <div className="text-xs sm:text-sm text-gray-600 break-words">
-                  <p>{companyData.address.street}</p>
-                  {(companyData.address.city ||
-                    companyData.address.state ||
-                    companyData.address.zipCode) && (
-                    <p>
-                      {companyData.address.city}
-                      {companyData.address.state &&
-                        `, ${companyData.address.state}`}{" "}
-                      {companyData.address.zipCode}
-                    </p>
-                  )}
-                  {companyData.address.country && (
-                    <p>{companyData.address.country}</p>
-                  )}
-                </div> */}
+                <span className="text-xs sm:text-sm text-gray-600 break-words">
+                  {companyData.address}
+                </span>
               </div>
 
               {companyData.phone && (
@@ -195,6 +223,20 @@ function Cprofile() {
                     className="text-xs sm:text-sm text-amber-600 hover:text-amber-700 transition-colors break-all"
                   >
                     {companyData.website}
+                  </a>
+                </div>
+              )}
+
+              {companyData.googleMapLink && (
+                <div className="flex items-start space-x-3">
+                  <MapPin className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <a
+                    href={companyData.googleMapLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs sm:text-sm text-amber-600 hover:text-amber-700 transition-colors break-all"
+                  >
+                    View on Google Maps
                   </a>
                 </div>
               )}

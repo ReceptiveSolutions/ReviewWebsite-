@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Star,
   MapPin,
@@ -15,11 +15,16 @@ import {
   EyeOff,
   Eye,
 } from "lucide-react";
-import { CompnyProfile, ReviewSection } from "../../index";
+import { ReviewSection } from "../../index";
 import { useParams, useLocation } from "react-router-dom";
+import CompanyProfile from "../../Components/CompnyPrrofileComponnets/CompanyProfile";
+import { useCompanyData } from "../../Components/CompnyPrrofileComponnets/useCompanyData";
+
 function CompanyProfilePage() {
   const { id } = useParams();
-//   console.log("Company ID:", id);
+  const companyProfileRef = useRef();
+  const { company, ratingDistribution, loading, error, refreshData, addOptimisticReview, removeOptimisticReview} = useCompanyData(id);
+  //   console.log("Company ID:", id);
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-amber-25 to-white p-4 md:p-6 relative overflow-hidden">
       {/* Enhanced decorative background elements */}
@@ -154,12 +159,25 @@ function CompanyProfilePage() {
       </div>
 
       <div className="max-w-7xl mx-auto relative">
-        {/* Enhanced Header Section */}
+         <CompanyProfile
+          company={company}
+          ratingDistribution={ratingDistribution}
+          loading={loading}
+          error={error}
+          refreshData={refreshData}
+          addOptimisticReview={addOptimisticReview}
+        />
+        <ReviewSection
+          company={company}
+          loading={loading}
+          error={error}
+          refreshData={refreshData}
+          addOptimisticReview={addOptimisticReview}
+          removeOptimisticReview={removeOptimisticReview}
+        />
 
-        <CompnyProfile></CompnyProfile>
-        <ReviewSection></ReviewSection>
       </div>
-    </div>
+    </div >
   );
 }
 
