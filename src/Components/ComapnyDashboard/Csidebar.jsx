@@ -57,7 +57,7 @@ function Csidebar({ active, setActive }) {
   return (
     <>
       {isMobile && open && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={() => setOpen(false)} />
+        <div className="fixed inset-0 backdrop-blur bg-opacity-50 z-40" onClick={() => setOpen(false)} />
       )}
 
       <div

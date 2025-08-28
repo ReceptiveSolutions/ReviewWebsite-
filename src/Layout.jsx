@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Outlet,useNavigate } from "react-router-dom";
+import { Outlet,useLocation,useNavigate } from "react-router-dom";
 import { Header, Footer } from "./index";
 import { useDispatch } from "react-redux";
 import { login } from "./Store/authSlice";
@@ -54,6 +54,17 @@ function Layout() {
 
     return () => clearTimeout(timer);
   }, [dispatch, navigate]);
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
+
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -61,6 +72,7 @@ function Layout() {
         <Loader />
       ) : (
         <>
+          <ScrollToTop />
           <Header />
           <main className="flex-grow container mx-auto">
             <Outlet />

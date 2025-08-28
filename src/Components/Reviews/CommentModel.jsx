@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { X, CheckCircle, Loader2, Heart, Trash2, AlertCircle } from "lucide-react";
 import { StarRating, CompanyReplyInmodel } from "../../index";
+// import "../../A"
 
 const CommentsModel = ({ isOpen, onClose, selectedReview }) => {
   const [commentText, setCommentText] = useState("");
@@ -449,7 +450,7 @@ const handleDeleteComment = async (commentId) => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="fixed inset-0 backdrop-blur bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
         <div className="bg-white rounded-lg shadow-xl border border-gray-200 max-w-2xl w-full max-h-[80vh] overflow-hidden">
           {/* Modal Header */}
           <div className="bg-gray-50 border-b border-gray-200 p-5">
@@ -604,7 +605,7 @@ const handleDeleteComment = async (commentId) => {
 
       {/* Delete Comment Confirmation Modal */}
       {deleteConfirmation && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[60] p-4">
+        <div className="fixed inset-0 backdrop-blur bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[60] p-4">
           <div className="bg-white rounded-lg shadow-xl border border-gray-200 max-w-md w-full p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">

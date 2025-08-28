@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Star, Pencil, ChevronDown, ChevronUp, CheckCircle, MessageCircle, X, Reply, EyeOff, Eye } from 'lucide-react'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom';
+import Toaster from "../Toaster"
 
 function MiniReview() {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
@@ -8,6 +9,8 @@ function MiniReview() {
   const [hoveredRating, setHoveredRating] = useState(0)
   const [comment, setComment] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [toasterMessage, setToasterMessage] = useState(null)
+  const [toasterType, setToasterType] = useState('success')
   const userId = localStorage.getItem("userId")
   const {id} = useParams()
 
@@ -15,7 +18,8 @@ function MiniReview() {
 
   const handleSubmitReview = async () => {
     if (rating === 0 || comment.trim() === '') {
-      alert('Please provide both rating and comment')
+      setToasterMessage('Please provide both rating and comment')
+      setToasterType('error')
       return
     }
     
@@ -44,17 +48,20 @@ function MiniReview() {
         setIsReviewModalOpen(false)
         setRating(0)
         setComment('')
-        alert('Review submitted successfully!')
+        setToasterMessage('Review submitted successfully!')
+        setToasterType('success')
       } else {
         const errorData = await response.json()
         console.error('Error submitting review:', errorData)
         setIsSubmitting(false)
-        alert('Failed to submit review. Please try again.')
+        setToasterMessage(errorData.message || 'Failed to submit review. Please try again.')
+        setToasterType('error')
       }
     } catch (error) {
       console.error('Network error:', error)
       setIsSubmitting(false)
-      alert('Network error. Please check your connection and try again.')
+      setToasterMessage('Network error. Please check your connection and try again.')
+      setToasterType('error')
     }
   }
 
@@ -67,6 +74,12 @@ function MiniReview() {
 
   return (
     <>
+      <Toaster 
+        message={toasterMessage} 
+        type={toasterType} 
+        onClose={() => setToasterMessage(null)} 
+      />
+
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <h2 className="text-2xl font-semibold text-gray-900">Customer Reviews</h2>
         <div className="flex flex-col sm:flex-row gap-3">
@@ -86,7 +99,7 @@ function MiniReview() {
 
       {/* Review Modal */}
       {isReviewModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 backdrop-blur bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-auto">
             {/* Modal Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-100">

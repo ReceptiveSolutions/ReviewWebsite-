@@ -1,6 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, X, User, Shield, Mail, CreditCard, FileText, MapPin, Globe, CheckCircle, Plus, Building2 } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  X,
+  User,
+  Shield,
+  Mail,
+  CreditCard,
+  FileText,
+  MapPin,
+  Globe,
+  CheckCircle,
+  Plus,
+  Building2,
+  ChevronDown,
+  Edit,
+} from "lucide-react";
 
 function InfoCard({ icon: Icon, title, children }) {
   return (
@@ -23,8 +39,8 @@ function InfoRow({ label, value, sensitive = false, isVisible, onToggle }) {
           {sensitive ? (isVisible ? value : "••••••••") : value}
         </span>
         {sensitive && (
-          <button 
-            onClick={onToggle} 
+          <button
+            onClick={onToggle}
             className="text-gray-400 hover:text-amber-600 transition-colors duration-200 p-1 rounded-md hover:bg-amber-50"
           >
             {isVisible ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -39,9 +55,52 @@ export default function ProfileView({ user }) {
   const [showAadhar, setShowAadhar] = useState(false);
   const [showPan, setShowPan] = useState(false);
   const [modalImage, setModalImage] = useState(null);
-   const navigate = useNavigate();
+  // Changed: Store the actual company ID instead of array index
+  const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+  const [showCompanyDropdown, setShowCompanyDropdown] = useState(false);
+  const [companies, setCompanies] = useState([]);
+  const navigate = useNavigate();
 
   const IMAGE_BASE_URL = "http://localhost:5000/uploads/";
+
+  // Helper function to get selected company object
+  const getSelectedCompany = () => {
+    return companies.find(company => company.id === selectedCompanyId) || companies[0];
+  };
+
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const userId = localStorage.getItem("userId");
+        if (!userId) {
+          console.error("No user ID available");
+          return;
+        }
+
+        const response = await fetch(
+          `http://localhost:5000/api/companies/user/${userId}`
+        );
+        if (response.ok) {
+          const data = await response.json();
+
+          // Always expect array, fallback to [] if not
+          setCompanies(data);
+          // Set the first company's ID as selected, not the index
+          if (data.length > 0) {
+            setSelectedCompanyId(data[0].id);
+          }
+
+          console.log("Fetched companies:", data);
+        } else {
+          console.error("Failed to fetch companies:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching companies:", error);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
@@ -70,7 +129,7 @@ export default function ProfileView({ user }) {
                 </div>
               )}
             </div>
-            
+
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-4">
                 <h1 className="text-3xl font-semibold text-gray-900">
@@ -83,49 +142,105 @@ export default function ProfileView({ user }) {
                   </div>
                 )}
               </div>
-              
+
               <div className="flex flex-col sm:flex-row sm:items-center gap-5 mb-6">
                 <div className="flex items-center gap-2 text-gray-600 bg-gray-50 px-3 py-1.5 rounded-md border border-gray-200">
                   <Mail className="w-4 h-4" />
-                  <span className="text-sm font-medium">
-                    {user?.email}
-                  </span>
+                  <span className="text-sm font-medium">{user?.email}</span>
                 </div>
-                
+
                 <div className="flex items-center gap-2">
                   <span className="px-3 py-1.5 bg-gray-50 rounded-md text-sm font-medium border border-gray-200 text-gray-700">
                     {user?.type}
                   </span>
-                  <span className={`px-3 py-1.5 rounded-md text-sm font-medium border ${
-                    user?.status === 'active' 
-                      ? 'bg-green-50 text-green-700 border-green-200' 
-                      : 'bg-amber-50 text-amber-700 border-amber-200'
-                  }`}>
+                  <span
+                    className={`px-3 py-1.5 rounded-md text-sm font-medium border ${
+                      user?.status === "active"
+                        ? "bg-green-50 text-green-700 border-green-200"
+                        : "bg-amber-50 text-amber-700 border-amber-200"
+                    }`}
+                  >
                     {user?.status}
                   </span>
                 </div>
               </div>
-              
-              {/* Add Company Buttons */}
-              <div className="flex flex-wrap gap-3 mb-6">
-                <button onClick={() => navigate("/comp-signup")}
-                className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 cursor-pointer"
+
+              {/* Company Selection and Actions */}
+              <div className="mb-6">
+                {companies.length > 0 && (
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+                    <div className="relative">
+                      <button
+                        className="flex items-center gap-2 bg-white border border-gray-300 rounded-md px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                        onClick={() =>
+                          setShowCompanyDropdown(!showCompanyDropdown)
+                        }
+                      >
+                        <Building2 className="w-4 h-4" />
+                        {getSelectedCompany()?.name || 'Select Company'}
+                        <ChevronDown className="w-4 h-4" />
+                      </button>
+
+                      {showCompanyDropdown && (
+                        <div className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg z-10">
+                          {companies.map((company) => (
+                            <button
+                              key={company.id}
+                              className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${
+                                company.id === selectedCompanyId
+                                  ? "bg-amber-50 text-amber-700"
+                                  : ""
+                              }`}
+                              onClick={() => {
+                                setSelectedCompanyId(company.id);
+                                setShowCompanyDropdown(false);
+                              }}
+                            >
+                              {company.name}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        console.log("Selected Company ID:", selectedCompanyId);
+                        navigate(`/comp-dashboard/${selectedCompanyId}`);
+                      }}
+                      className="flex items-center gap-2 bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                      disabled={!selectedCompanyId}
+                    >
+                      View Company
+                    </button>
+
+                    {companies.length > 1 && (
+                      <button
+                        onClick={() => navigate("/manage-companies")}
+                        className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                      >
+                        <Edit className="w-4 h-4" />
+                        Edit Companies
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                <button
+                  onClick={() => navigate("/comp-signup")}
+                  className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
                 >
-                  <Plus className="w-4 h-4"/>
-                  Add Your Company
-                </button>
-                <button 
-                onClick={() => navigate("/comp-dashboard/:id")}
-                className="flex items-center gap-2 bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                  <Building2 className="w-4 h-4" />
-                  View Your Companies
+                  <Plus className="w-4 h-4" />
+                  Add New Company
                 </button>
               </div>
-              
+
               <div className="space-y-4">
                 <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-md border border-gray-200">
                   <MapPin className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700 font-medium text-sm">{user?.address || 'No address provided'}</span>
+                  <span className="text-gray-700 font-medium text-sm">
+                    {user?.address || "No address provided"}
+                  </span>
                 </div>
               </div>
             </div>
@@ -138,14 +253,17 @@ export default function ProfileView({ user }) {
           <InfoCard icon={User} title="Personal Information">
             <InfoRow label="First Name" value={user?.first_name} />
             <InfoRow label="Last Name" value={user?.last_name} />
-            <InfoRow label="Google Auth" value={user?.google_auth ? "Enabled" : "Disabled"} />
+            <InfoRow
+              label="Google Auth"
+              value={user?.google_auth ? "Enabled" : "Disabled"}
+            />
           </InfoCard>
 
           {/* Account Details */}
           <InfoCard icon={Shield} title="Account Details">
             <InfoRow label="Status" value={user?.status} />
             <InfoRow label="Subscription" value={user?.subscription} />
-            <InfoRow label="Companies" value={user?.noOfComp?.toString()} />
+            <InfoRow label="Companies" value={companies.length.toString()} />
           </InfoCard>
 
           {/* Contact Information */}
@@ -154,7 +272,7 @@ export default function ProfileView({ user }) {
             <div className="pt-3 border-t border-gray-200 mt-3">
               <span className="text-gray-600 text-sm font-medium">Address</span>
               <p className="font-semibold text-gray-800 text-sm mt-2 leading-relaxed bg-gray-50 p-3 rounded-lg border border-gray-200">
-                {user?.address || 'No address provided'}
+                {user?.address || "No address provided"}
               </p>
             </div>
           </InfoCard>
@@ -218,7 +336,7 @@ export default function ProfileView({ user }) {
 
         {/* Modal */}
         {modalImage && (
-          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="fixed inset-0 backdrop-blur backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div className="relative max-w-4xl max-h-[90vh] w-full flex justify-center items-center">
               {/* Close Button */}
               <button
